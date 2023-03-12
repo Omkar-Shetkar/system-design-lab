@@ -1,0 +1,3 @@
+server:
+  nodes: 5
+  hashSpace: 100
