@@ -1,5 +1,6 @@
 package com.example.web;
 
+import com.example.model.Data;
 import com.example.server.HashRing;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +13,11 @@ public class CoordinatorService {
         this.hashRing = hashRing;
     }
 
-    public void add(String key, String value) {
-        hashRing.addData(key, value);
+    public void add(Data data) {
+        hashRing.addData(data);
+    }
+
+    public boolean delete(String key) {
+        return hashRing.deleteData(key);
     }
 }

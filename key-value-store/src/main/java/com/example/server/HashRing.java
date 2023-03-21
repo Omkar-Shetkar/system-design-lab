@@ -1,5 +1,6 @@
 package com.example.server;
 
+import com.example.model.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,9 @@ public class HashRing {
         return Arrays.stream(nodes).filter(n -> n != null).map(n -> n.getName()).collect(Collectors.joining("-->"));
     }
 
-    public void addData(String key, String value) {
+    public void addData(Data data) {
+        String key = data.getKey();
+        String value = data.getValue();
         int hash = computeHash(key);
         Node node = findNode(hash);
         if (node != null) {
@@ -50,6 +53,28 @@ public class HashRing {
         } else {
             LOGGER.error("Couldn't find appropriate node for key {}", key);
         }
+    }
+
+
+    /**
+     * Delete a data item from a node on hash ring
+     *
+     * @param key - the Key
+     * @return - {@code true} if success or else {@code false}
+     */
+    public boolean deleteData(String key) {
+        int hash = computeHash(key);
+        Node node = findNode(hash);
+        if (node != null) {
+            if (node.delete(key) != null) {
+                LOGGER.info("Deleted data with key: {}", key);
+                return true;
+            } else {
+                LOGGER.info("Couldn't delete data with key: {}", key);
+                return false;
+            }
+        }
+        return false;
     }
 
     /**
@@ -70,4 +95,5 @@ public class HashRing {
         }
         return null;
     }
+
 }

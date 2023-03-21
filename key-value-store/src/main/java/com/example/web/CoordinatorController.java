@@ -1,12 +1,11 @@
 package com.example.web;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.model.Data;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/")
+@RequestMapping("/api/data")
 public class CoordinatorController {
 
     private final CoordinatorService coordinatorService;
@@ -15,9 +14,19 @@ public class CoordinatorController {
         this.coordinatorService = coordinatorService;
     }
 
-    @PostMapping("add")
-    public void addData(@RequestParam("key") String key, @RequestParam("value") String value) {
-        coordinatorService.add(key, value);
+    @PostMapping
+    public void addData(@RequestBody Data data) {
+        coordinatorService.add(data);
     }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteData(@RequestParam("key") String key) {
+        if (coordinatorService.delete(key)) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 
 }

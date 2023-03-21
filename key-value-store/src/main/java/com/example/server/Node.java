@@ -24,4 +24,8 @@ public class Node {
     public String put(String key, String value) {
         return data.put(key, value);
     }
+
+    public String delete(String key) {
+        return data.remove(key);
+    }
 }
