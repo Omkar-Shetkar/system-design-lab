@@ -78,7 +78,8 @@ public class HashRing {
         if (index != -1) {
             Node node = nodes[index];
             if (node.delete(key) != null) {
-                LOGGER.info("Deleted data with key: {}", key);
+                LOGGER.info("Deleted data with key: {} from node: ", key, node.getName());
+                removeFromReplications(key, index);
                 return true;
             } else {
                 LOGGER.info("Couldn't delete data with key: {}", key);
@@ -86,6 +87,15 @@ public class HashRing {
             }
         }
         return false;
+    }
+
+    private void removeFromReplications(String key, int fromNodeIndex) {
+        for (int i = 0; i < config.getReplication(); i++) {
+            int index = fromNodeIndex < nodes.length - 1 ? fromNodeIndex + 1 : 0;
+            nodes[index].delete(key);
+            LOGGER.info("Removed key: {} from replicated node: {}", key, nodes[index].getName());
+            fromNodeIndex = index;
+        }
     }
 
     /**

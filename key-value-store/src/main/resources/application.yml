@@ -1,4 +1,4 @@
 server:
   nodes: 10
   hashSpace: 100
-  replication: 0
+  replication: 1
