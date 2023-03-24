@@ -1,3 +1,4 @@
 server:
-  nodes: 5
+  nodes: 10
   hashSpace: 100
+  replication: 0

@@ -1,6 +1,5 @@
 package com.example.server;
 
-import com.example.model.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,58 +41,45 @@ public class HashRing {
         return Arrays.stream(nodes).filter(n -> n != null).map(n -> n.getName()).collect(Collectors.joining("-->"));
     }
 
-    public void addData(Data data) {
-        String key = data.getKey();
-        String value = data.getValue();
+    public void addData(String key, String value) {
         int hash = computeHash(key);
-        Node node = findNode(hash);
-        if (node != null) {
+        int index = findNode(hash);
+        if (index != -1) {
+            Node node = nodes[index];
             node.put(key, value);
             LOGGER.info("Added key {} into node {}", key, node.getName());
+            replicate(key, value, index);
         } else {
             LOGGER.error("Couldn't find appropriate node for key {}", key);
         }
     }
 
-
-    /**
-     * Delete a data item from a node on hash ring
-     *
-     * @param key - the Key
-     * @return - {@code true} if success or else {@code false}
-     */
-    public boolean deleteData(String key) {
-        int hash = computeHash(key);
-        Node node = findNode(hash);
-        if (node != null) {
-            if (node.delete(key) != null) {
-                LOGGER.info("Deleted data with key: {}", key);
-                return true;
-            } else {
-                LOGGER.info("Couldn't delete data with key: {}", key);
-                return false;
-            }
+    private void replicate(String key, String value, int fromNodeIndex) {
+        for (int i = 0; i < config.getReplication(); i++) {
+            int index = fromNodeIndex < nodes.length - 1 ? fromNodeIndex + 1 : 0;
+            nodes[index].put(key, value);
+            LOGGER.info("Replicated key {} into node {}", key, nodes[index].getName());
+            fromNodeIndex = index;
         }
-        return false;
     }
 
     /**
-     * Find node for the given hash in clock-wise direction
+     * Find node position for the given hash in clock-wise direction
      */
-    private Node findNode(int hash) {
+    private int findNode(int hash) {
         if (nodes[hash] != null) {
-            return nodes[hash];
+            return hash;
         }
         int index = hash < nodes.length - 1 ? hash + 1 : hash;
 
         while (index != hash) {
             if (nodes[index] != null) {
-                return nodes[index];
+                return index;
             } else {
                 index = index < nodes.length - 1 ? index + 1 : 0;
             }
         }
-        return null;
+        return -1;
     }
 
 }
