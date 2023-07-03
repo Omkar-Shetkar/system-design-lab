@@ -1,8 +1,8 @@
 package com.example;
 
-import jakarta.persistence.Entity;
-
-@Entity
+//import jakarta.persistence.Entity;
+//
+//@Entity
 public class ShortUrlEntity {
 
 }
