@@ -69,4 +69,23 @@ public class InMemoryLuceneIndex {
         return null;
 
     }
+
+    public List<Document> searchIndex(Query query) {
+        try {
+            IndexReader indexReader = DirectoryReader.open(memoryIndex);
+            IndexSearcher searcher = new IndexSearcher(indexReader);
+            TopDocs topDocs = searcher.search(query, 10);
+            List<Document> documents = new ArrayList<>();
+            for (ScoreDoc scoreDoc : topDocs.scoreDocs) {
+                documents.add(searcher.doc(scoreDoc.doc));
+            }
+
+            return documents;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+
+    }
+
 }
