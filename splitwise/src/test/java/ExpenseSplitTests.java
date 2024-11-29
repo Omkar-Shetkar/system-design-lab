@@ -5,9 +5,9 @@ public class ExpenseSplitTests {
 
     @Test
     public void expenseTest() {
-        User u1 = new User("u1");
-        SplitDe
-        u1.pay(borrowers);
+        // User u1 = new User("u1");
+        // SplitDe
+        // u1.pay(borrowers);
 
     }
 }
