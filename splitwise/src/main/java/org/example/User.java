@@ -9,6 +9,7 @@ public class User {
     public User(String name) {
         this.name = name;
     }
+
     /**
      * Creditor pays to borrowers.
      */
@@ -27,7 +28,7 @@ public class User {
      * Borrowed details of the current user.
      */
     public List<BorrowerDetails> borrowedDetails() {
-return null;
+        return null;
     }
 
     @Override
