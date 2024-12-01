@@ -2,16 +2,16 @@ package org.example;
 
 public class SplitStrategyFactory {
 
-    public static SplitStrategy splitStrategy(SplitType splitType) {
+    public static ISplitStrategy splitStrategy(SplitType splitType) {
         switch (splitType) {
             case EQUAL -> {
-                return new EqualSplitStrategy();
+                return new EqualISplitStrategy();
             }
             case EXACT -> {
-                return new ExactSplitStrategy();
+                return new ExactISplitStrategy();
             }
             case PERCENT -> {
-                return new PercentSplitStrategy();
+                return new PercentISplitStrategy();
             }
         }
 

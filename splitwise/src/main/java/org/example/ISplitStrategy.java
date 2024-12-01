@@ -1,6 +1,6 @@
 package org.example;
 
-public interface SplitStrategy {
+public interface ISplitStrategy {
 
     void split(SplitDetails splitDetails);
 }

@@ -1,6 +1,6 @@
 package org.example;
 
-public class ExactSplitStrategy implements SplitStrategy {
+public class ExactISplitStrategy implements ISplitStrategy {
     @Override
     public void split(SplitDetails splitDetails) {
 

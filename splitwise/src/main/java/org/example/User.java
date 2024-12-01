@@ -25,7 +25,7 @@ public class User {
      * Creditor pays to borrowers.
      */
     public void pay(SplitDetails splitDetails) {
-        SplitStrategy splitStrategy = SplitStrategyFactory.splitStrategy(splitDetails.splitType());
+        ISplitStrategy splitStrategy = SplitStrategyFactory.splitStrategy(splitDetails.splitType());
         splitStrategy.split(splitDetails);
     }
 
